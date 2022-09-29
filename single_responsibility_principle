@@ -1,0 +1,67 @@
+/// Single responsibility principle.
+/// Every class, method or function has only one reason to change.
+/// One class method or function is responsible for one thing.
+
+//BAD!
+
+class User {
+  final String name;
+  final int age;
+  final bool isMember;
+  final String email;
+
+  User({
+    required this.name,
+    required this.age,
+    required this.isMember,
+    required this.email,
+  });
+
+  bool canFollowMembers() {
+    return isMember;
+  }
+
+  void signIn() {
+    verification();
+  }
+
+  void signOut() {}
+
+  bool verification() {
+    return email.contains('@');
+  }
+}
+
+// GOOD!
+
+class UserGood {
+  String name;
+  int age;
+  bool isMember;
+  String email;
+
+  UserGood({
+    required this.name,
+    required this.age,
+    required this.isMember,
+    required this.email,
+  });
+
+  bool canFollowMembers() {
+    return isMember;
+  }
+}
+
+class Authentication with Validation {
+  void signInWithEmail(UserGood user) {
+    emailVerification(user.email);
+  }
+
+  void signOut(UserGood user) {}
+}
+
+mixin Validation {
+  bool emailVerification(String email) {
+    return email.contains('@');
+  }
+}
